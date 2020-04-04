@@ -16,6 +16,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool InfiniteAmmo = false;
     public static bool InfiniteHealth = false;
     public static bool FastSprint = false;
+    public static bool RocketBoots = false;
 
     public void Start()
     {
@@ -94,6 +95,8 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             move.sprintSpeed = 30f;
         else
             move.sprintSpeed = 12f;
+
+        move.rocketJumpEnabled = RocketBoots;
     }
 
     public void OnGUI()
@@ -110,6 +113,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil", new GUILayoutOption[0]);
         InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health", new GUILayoutOption[0]);
         FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast", new GUILayoutOption[0]);
+        RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump", new GUILayoutOption[0]);
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
         {
             this.otherWindow.x = this.window.width + 20f;
