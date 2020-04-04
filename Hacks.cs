@@ -16,6 +16,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool NoRecoil = false;
     public static bool FullAuto = false;
     public static bool InfiniteAmmo = false;
+    public static bool InfiniteHealth = false;
 
     public void Start()
     {
@@ -57,6 +58,19 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.sideKick = 0f;
             cw.additionalSideKick = 0f;
         }
+
+        // Get health class
+        Health health = null;
+        foreach (Health h in FindObjectsOfType<Health>())
+        {
+            if (h.isLocalPlayer) health = h;
+        }
+
+        if (InfiniteHealth && health != null)
+        {
+            health.currentHealth = 100;
+            health.NetworkcurrentHealth = 100;
+        }
     }
 
     public void OnGUI()
@@ -71,6 +85,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         InfiniteAmmo = GUILayout.Toggle(InfiniteAmmo, "Infinite Ammo", new GUILayoutOption[0]);
         FullAuto = GUILayout.Toggle(FullAuto, "Full Auto", new GUILayoutOption[0]);
         NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil", new GUILayoutOption[0]);
+        InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health", new GUILayoutOption[0]);
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
         {
             this.otherWindow.x = this.window.width + 20f;
