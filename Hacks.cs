@@ -15,6 +15,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool FullAuto = false;
     public static bool InfiniteAmmo = false;
     public static bool InfiniteHealth = false;
+    public static bool FastSprint = false;
 
     public void Start()
     {
@@ -30,6 +31,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
         WeaponHacks();
         HealthHacks();
+        MovementHacks();
     }
     
     private void WeaponHacks()
@@ -51,12 +53,9 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.Networkcurrentclip = cw.clipSize;
         }
 
-        if (FullAuto)
-        {
-            cw.fullAuto = true;
-            cw.recovering = false;
-            cw.recoveryTime = 0f;
-        }
+
+        cw.fullAuto = FullAuto;
+        if (FullAuto) cw.recovering = false;
 
         if (NoRecoil)
         {
@@ -83,6 +82,21 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         }
     }
 
+    private void MovementHacks()
+    {
+        Movement move = null;
+        foreach (Movement mv in FindObjectsOfType<Movement>())
+        {
+            if (mv.isLocalPlayer) move = mv;
+        }
+        if (move == null) return;
+
+        if (FastSprint)
+            move.sprintSpeed = 30f;
+        else
+            move.sprintSpeed = 12f;
+    }
+
     public void OnGUI()
     {
         if (!this.Visible) return;
@@ -96,6 +110,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         FullAuto = GUILayout.Toggle(FullAuto, "Full Auto", new GUILayoutOption[0]);
         NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil", new GUILayoutOption[0]);
         InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health", new GUILayoutOption[0]);
+        FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast", new GUILayoutOption[0]);
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
         {
             this.otherWindow.x = this.window.width + 20f;
