@@ -77,7 +77,6 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
         if (InfiniteHealth)
         {
-            health.currentHealth = 100;
             health.NetworkcurrentHealth = 100;
         }
     }
