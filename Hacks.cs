@@ -2,8 +2,6 @@
 
 public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 {
-    public WeaponManager weaponManager;
-
     // Toggle menu visibility
     public bool Visible = true;
     public bool OtherVisible = false;
@@ -30,13 +28,21 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             this.Visible = !this.Visible;
         }
 
+        WeaponHacks();
+        HealthHacks();
+    }
+    
+    private void WeaponHacks()
+    {
         // Get weapon manager
+        WeaponManager weaponManager = null;
         foreach (WeaponManager wm in FindObjectsOfType<WeaponManager>())
         {
             if (wm.isLocalPlayer) weaponManager = wm;
         }
         if (weaponManager == null) return;
 
+        // Get current weapon
         Weapon cw = weaponManager.weapons[weaponManager.currentWeapon];
 
         if (InfiniteAmmo)
@@ -58,15 +64,19 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.sideKick = 0f;
             cw.additionalSideKick = 0f;
         }
+    }
 
+    private void HealthHacks()
+    {
         // Get health class
         Health health = null;
         foreach (Health h in FindObjectsOfType<Health>())
         {
             if (h.isLocalPlayer) health = h;
         }
+        if (health == null) return;
 
-        if (InfiniteHealth && health != null)
+        if (InfiniteHealth)
         {
             health.currentHealth = 100;
             health.NetworkcurrentHealth = 100;
