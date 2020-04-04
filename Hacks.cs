@@ -25,16 +25,26 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Insert))
-        {
-            this.Visible = !this.Visible;
-        }
+        // Handle keys
+        KeyBindings();
 
+        // Handle hacks
         WeaponHacks();
         HealthHacks();
         MovementHacks();
     }
-    
+
+    private void KeyBindings()
+    {
+        if (Input.GetKeyDown(KeyCode.Insert)) this.Visible = !this.Visible;
+        if (Input.GetKeyDown(KeyCode.C)) InfiniteAmmo = !InfiniteAmmo;
+        if (Input.GetKeyDown(KeyCode.F)) FullAuto = !FullAuto;
+        if (Input.GetKeyDown(KeyCode.V)) NoRecoil = !NoRecoil;
+        if (Input.GetKeyDown(KeyCode.G)) InfiniteHealth = !InfiniteHealth;
+        if (Input.GetKeyDown(KeyCode.H)) FastSprint = !FastSprint;
+        if (Input.GetKeyDown(KeyCode.B)) RocketBoots = !RocketBoots;
+    }
+
     private void WeaponHacks()
     {
         // Get weapon manager
@@ -108,12 +118,12 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     public void Draw(int id)
     {
-        InfiniteAmmo = GUILayout.Toggle(InfiniteAmmo, "Infinite Ammo", new GUILayoutOption[0]);
-        FullAuto = GUILayout.Toggle(FullAuto, "Full Auto", new GUILayoutOption[0]);
-        NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil", new GUILayoutOption[0]);
-        InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health", new GUILayoutOption[0]);
-        FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast", new GUILayoutOption[0]);
-        RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump", new GUILayoutOption[0]);
+        InfiniteAmmo = GUILayout.Toggle(InfiniteAmmo, "Infinite Ammo (C)", new GUILayoutOption[0]);
+        FullAuto = GUILayout.Toggle(FullAuto, "Full Auto (F)", new GUILayoutOption[0]);
+        NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil (V)", new GUILayoutOption[0]);
+        InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health (G)", new GUILayoutOption[0]);
+        FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast (H)", new GUILayoutOption[0]);
+        RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump (B)", new GUILayoutOption[0]);
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
         {
             this.otherWindow.x = this.window.width + 20f;
