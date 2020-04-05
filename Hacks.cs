@@ -21,6 +21,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
     public static string StartWeapon = "0";
+    public static string CustomAttachment = "0";
     public static string CustomLevel = "";
 
     public void Start()
@@ -67,6 +68,8 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         {
             cw.currentclip = cw.clipSize;
             cw.Networkcurrentclip = cw.clipSize;
+            cw.totalAmmo = cw.maxSpareAmmo;
+            cw.NetworktotalAmmo = cw.maxSpareAmmo;
         }
 
 
@@ -80,9 +83,18 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.additionalSideKick = 0f;
         }
 
-        if (StartWeapon.Length != 0)
+        if (StartWeapon.Length != 0) weaponManager.startingWeapon = int.Parse(StartWeapon);
+        else weaponManager.startingWeapon = 0;
+
+        if (CustomAttachment.Length != 0)
         {
-            weaponManager.startingWeapon = int.Parse(StartWeapon);
+            cw.currentAttachment = int.Parse(CustomAttachment);
+            cw.NetworkcurrentAttachment = int.Parse(CustomAttachment);
+        }
+        else
+        {
+            cw.currentAttachment = 0;
+            cw.NetworkcurrentAttachment = 0;
         }
     }
 
@@ -170,8 +182,12 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     {
         GUILayout.Label("Set Starting Weapon (use number):", new GUILayoutOption[0]);
         StartWeapon = GUILayout.TextField(StartWeapon, new GUILayoutOption[0]);
-        string WeaponList = "Glock: 0, Ranger: 1, Pump: 2\nAK: 3, B50: 4, Uzi: 5\nRocket: 6, AS-VAL: 7\nGrenade: 8, TM-100: 9\nRevolver: 10, M16: 11\nLazer: 12, R70: 13, KAT: 14";
+        string WeaponList = "Glock: 0, Ranger: 1, Pump: 2\nAK-47: 3, B50: 4, Uzi: 5\nRocket: 6, AS-VAL: 7\nGrenade: 8, TM-100: 9\nRevolver: 10, M16: 11\nLazer: 12, R70: 13, KAT: 14";
         GUILayout.Label(WeaponList, new GUILayoutOption[0]);
+        GUILayout.Label("Set current attachment:", new GUILayoutOption[0]);
+        CustomAttachment = GUILayout.TextField(CustomAttachment, new GUILayoutOption[0]);
+        string AttachmentList = "None: 0, Holographic: 1\nAcog: 2, Sniper: 3\nSilencer: 4";
+        GUILayout.Label(AttachmentList, new GUILayoutOption[0]);
         GUI.DragWindow();
     }
 
