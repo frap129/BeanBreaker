@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool NoRecoil = false;
     public static bool FullAuto = false;
     public static bool InfiniteAmmo = false;
-    public static bool InfiniteHealth = false;
+    public static bool AutoHeal = false;
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
 
@@ -40,7 +41,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C)) InfiniteAmmo = !InfiniteAmmo;
         if (Input.GetKeyDown(KeyCode.F)) FullAuto = !FullAuto;
         if (Input.GetKeyDown(KeyCode.V)) NoRecoil = !NoRecoil;
-        if (Input.GetKeyDown(KeyCode.G)) InfiniteHealth = !InfiniteHealth;
+        if (Input.GetKeyDown(KeyCode.G)) AutoHeal = !AutoHeal;
         if (Input.GetKeyDown(KeyCode.H)) FastSprint = !FastSprint;
         if (Input.GetKeyDown(KeyCode.B)) RocketBoots = !RocketBoots;
     }
@@ -86,9 +87,26 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         }
         if (health == null) return;
 
-        if (InfiniteHealth)
+        // Get NetworkIdentity
+        NetworkIdentity id = null;
+        foreach (NetworkIdentity ni in FindObjectsOfType<NetworkIdentity>())
         {
-            health.NetworkcurrentHealth = 125;
+            if (ni.isLocalPlayer) id = ni;
+        }
+        if (id == null) return;
+
+        // Get Extras object
+        Extras extras = null;
+        foreach (Extras ex in FindObjectsOfType<Extras>())
+        {
+            if (ex.isLocalPlayer) extras = ex;
+        }
+        if (extras == null) return;
+
+
+        if (AutoHeal && health.currentHealth <= 90 && !health.healing)
+        {
+            extras.CallCmdHeal(id.netId, 100 - health.currentHealth);
         }
     }
 
@@ -121,7 +139,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         InfiniteAmmo = GUILayout.Toggle(InfiniteAmmo, "Infinite Ammo (C)", new GUILayoutOption[0]);
         FullAuto = GUILayout.Toggle(FullAuto, "Full Auto (F)", new GUILayoutOption[0]);
         NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil (V)", new GUILayoutOption[0]);
-        InfiniteHealth = GUILayout.Toggle(InfiniteHealth, "Infinite Health (G)", new GUILayoutOption[0]);
+        AutoHeal = GUILayout.Toggle(AutoHeal, "Auto Heal (G)", new GUILayoutOption[0]);
         FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast (H)", new GUILayoutOption[0]);
         RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump (B)", new GUILayoutOption[0]);
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
