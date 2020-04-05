@@ -5,10 +5,12 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 {
     // Toggle menu visibility
     public bool Visible = true;
+    public bool WeaponVisible = false;
     public bool OtherVisible = false;
 
     // Rect to hold menus
     private Rect window;
+    private Rect weaponWindow;
     private Rect otherWindow;
 
     // Settings
@@ -18,6 +20,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool AutoHeal = false;
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
+    public static string StartWeapon = "0";
 
     public void Start()
     {
@@ -75,6 +78,11 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.sideKick = 0f;
             cw.additionalSideKick = 0f;
         }
+
+        if (StartWeapon.Length != 0)
+        {
+            weaponManager.startingWeapon = int.Parse(StartWeapon);
+        }
     }
 
     private void HealthHacks()
@@ -131,7 +139,8 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     {
         if (!this.Visible) return;
         this.window = GUILayout.Window(0, this.window, new GUI.WindowFunction(this.Draw), "BeanBreaker", new GUILayoutOption[0]);
-        if (this.OtherVisible) this.otherWindow = GUILayout.Window(1, this.otherWindow, new GUI.WindowFunction(this.DrawOtherOptions), "Other Options", new GUILayoutOption[0]);
+        if (this.WeaponVisible) this.weaponWindow = GUILayout.Window(1, this.weaponWindow, new GUI.WindowFunction(this.DrawWeaponOptions), "Weapon Options", new GUILayoutOption[0]);
+        if (this.OtherVisible) this.otherWindow = GUILayout.Window(2, this.otherWindow, new GUI.WindowFunction(this.DrawOtherOptions), "Other Options", new GUILayoutOption[0]);
     }
 
     public void Draw(int id)
@@ -142,11 +151,26 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         AutoHeal = GUILayout.Toggle(AutoHeal, "Auto Heal (G)", new GUILayoutOption[0]);
         FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast (H)", new GUILayoutOption[0]);
         RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump (B)", new GUILayoutOption[0]);
+        if (GUILayout.Button("Weapon Options", new GUILayoutOption[0]))
+        {
+            this.weaponWindow.x = this.window.width + 20f;
+            this.weaponWindow.width = 200f;
+            this.WeaponVisible = !this.WeaponVisible;
+        }
         if (GUILayout.Button("Other Options", new GUILayoutOption[0]))
         {
             this.otherWindow.x = this.window.width + 20f;
             this.OtherVisible = !this.OtherVisible;
         }
+        GUI.DragWindow();
+    }
+
+    public void DrawWeaponOptions(int id)
+    {
+        GUILayout.Label("Set Starting Weapon (use number):", new GUILayoutOption[0]);
+        StartWeapon = GUILayout.TextField(StartWeapon, new GUILayoutOption[0]);
+        string WeaponList = "Glock: 0, Ranger: 1, Pump: 2\nAK: 3, B50: 4, Uzi: 5\nRocket: 6, AS-VAL: 7\nGrenade: 8, TM-100: 9\nRevolver: 10, M16: 11\nLazer: 12, R70: 13, KAT: 14";
+        GUILayout.Label(WeaponList, new GUILayoutOption[0]);
         GUI.DragWindow();
     }
 
@@ -159,7 +183,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         }
         if (GUILayout.Button("Unlock Every Icon/Sprite", new GUILayoutOption[0]))
         {
-            for(int i = 0; i < player.playerSprites.Length; i++) player.UnlockSprite(i);
+            for (int i = 0; i < player.playerSprites.Length; i++) player.UnlockSprite(i);
         }
         if (GUILayout.Button("Unlock Every Title", new GUILayoutOption[0]))
         {
@@ -170,6 +194,5 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             for (int i = 0; i < player.AchievementsID.Count; i++) player.UnlockSteamAchievement(player.AchievementsID[i]);
         }
         GUI.DragWindow();
-
     }
 }
