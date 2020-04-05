@@ -20,6 +20,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool AutoHeal = false;
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
+    public static bool MapESP = false;
     public static string StartWeapon = "0";
     public static string CustomAttachment = "0";
     public static string CustomLevel = "";
@@ -38,6 +39,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         WeaponHacks();
         HealthHacks();
         MovementHacks();
+        MapHacks();
     }
 
     private void KeyBindings()
@@ -148,6 +150,29 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         move.rocketJumpEnabled = RocketBoots;
     }
 
+    private void MapHacks()
+    {
+        SetUpLocalPlayer slp = null;
+        foreach (SetUpLocalPlayer s in FindObjectsOfType<SetUpLocalPlayer>())
+        {
+            if (s.isLocalPlayer) slp = s;
+        }
+        if (slp == null) return;
+
+        if (MapESP)
+        {
+            foreach (NetworkIdentity ni in FindObjectsOfType<NetworkIdentity>())
+            {
+                if (!ni.isLocalPlayer)
+                {
+                    GameObject player = ClientScene.FindLocalObject(ni.netId);
+                    player.GetComponent<SetUpLocalPlayer>().playerColor = Color.red;
+                    slp.SetSinglePointerUI(player);
+                }
+            }
+        }
+    }
+
     public void OnGUI()
     {
         if (!this.Visible) return;
@@ -164,6 +189,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         AutoHeal = GUILayout.Toggle(AutoHeal, "Auto Heal (G)", new GUILayoutOption[0]);
         FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast (H)", new GUILayoutOption[0]);
         RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump (B)", new GUILayoutOption[0]);
+        MapESP = GUILayout.Toggle(MapESP, "Map ESP", new GUILayoutOption[0]);
         if (GUILayout.Button("Weapon Options", new GUILayoutOption[0]))
         {
             this.weaponWindow.x = this.window.width + 20f;
