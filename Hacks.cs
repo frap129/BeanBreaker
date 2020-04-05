@@ -21,6 +21,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
     public static string StartWeapon = "0";
+    public static string CustomLevel = "";
 
     public void Start()
     {
@@ -192,6 +193,14 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         if (GUILayout.Button("Unlock Every Acheivement", new GUILayoutOption[0]))
         {
             for (int i = 0; i < player.AchievementsID.Count; i++) player.UnlockSteamAchievement(player.AchievementsID[i]);
+        }
+        GUILayout.Label("Enter Player Level:", new GUILayoutOption[0]);
+        if (CustomLevel.Length == 0) CustomLevel = player.GetPlayerLevel().ToString();
+        CustomLevel = GUILayout.TextField(CustomLevel, new GUILayoutOption[0]);
+        if (GUILayout.Button("Set Level", new GUILayoutOption[0]))
+        {
+            if (CustomLevel.Length > 0)
+                player.SetPlayerLevel(int.Parse(CustomLevel));
         }
         GUI.DragWindow();
     }
