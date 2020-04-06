@@ -21,6 +21,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     public static bool FastSprint = false;
     public static bool RocketBoots = false;
     public static bool MapESP = false;
+    public static float SprintMultiplier = 1f;
     public static string StartWeapon = "0";
     public static string CustomAttachment = "0";
     public static string CustomLevel = "";
@@ -143,7 +144,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         if (move == null) return;
 
         if (FastSprint)
-            move.sprintSpeed = 30f;
+            move.sprintSpeed = 12f * SprintMultiplier;
         else
             move.sprintSpeed = 12f;
 
@@ -187,7 +188,9 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         FullAuto = GUILayout.Toggle(FullAuto, "Full Auto (F)", new GUILayoutOption[0]);
         NoRecoil = GUILayout.Toggle(NoRecoil, "No Recoil (V)", new GUILayoutOption[0]);
         AutoHeal = GUILayout.Toggle(AutoHeal, "Auto Heal (G)", new GUILayoutOption[0]);
-        FastSprint = GUILayout.Toggle(FastSprint, "Sprint fast (H)", new GUILayoutOption[0]);
+        string sprintTitle = "Sprint Multiplier (H): " + SprintMultiplier.ToString() + "x";
+        FastSprint = GUILayout.Toggle(FastSprint, sprintTitle, new GUILayoutOption[0]);
+        SprintMultiplier = Mathf.Round(GUILayout.HorizontalSlider(SprintMultiplier, 1f, 3f, new GUILayoutOption[0]) * 100f) / 100f;
         RocketBoots = GUILayout.Toggle(RocketBoots, "Rocket Jump (B)", new GUILayoutOption[0]);
         MapESP = GUILayout.Toggle(MapESP, "Map ESP", new GUILayoutOption[0]);
         if (GUILayout.Button("Weapon Options", new GUILayoutOption[0]))
