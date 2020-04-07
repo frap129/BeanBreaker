@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 {
@@ -153,23 +154,21 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void MapHacks()
     {
-        SetUpLocalPlayer slp = null;
+        SetUpLocalPlayer myPlayer = null;
+        List<SetUpLocalPlayer> players = new List<SetUpLocalPlayer>();
         foreach (SetUpLocalPlayer s in FindObjectsOfType<SetUpLocalPlayer>())
         {
-            if (s.isLocalPlayer) slp = s;
+            if (s.isLocalPlayer) myPlayer = s;
+            else players.Add(s);
         }
         if (slp == null) return;
 
         if (MapESP)
         {
-            foreach (NetworkIdentity ni in FindObjectsOfType<NetworkIdentity>())
+            foreach (SetUpLocalPlayer s in players)
             {
-                if (!ni.isLocalPlayer)
-                {
-                    GameObject player = ClientScene.FindLocalObject(ni.netId);
-                    player.GetComponent<SetUpLocalPlayer>().playerColor = Color.red;
-                    slp.SetSinglePointerUI(player);
-                }
+                GameObject player = s.gameObject;
+                slp.SetSinglePointerUI(player);
             }
         }
     }
