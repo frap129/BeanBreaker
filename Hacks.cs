@@ -57,6 +57,12 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void WeaponHacks()
     {
+        // Exit early if possible
+        if (!(InfiniteAmmo || FullAuto || NoRecoil ||
+            (StartWeapon.Length != 0 && !StartWeapon.Equals("0") ||
+            (CustomAttachment.Length != 0 && !CustomAttachment.Equals("0")))
+            return;
+
         // Get weapon manager
         WeaponManager weaponManager = null;
         foreach (WeaponManager wm in FindObjectsOfType<WeaponManager>())
@@ -104,6 +110,9 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void HealthHacks()
     {
+        // Exit early if possible
+        if (!AutoHeal) return;
+
         // Get health class
         Health health = null;
         foreach (Health h in FindObjectsOfType<Health>())
@@ -137,6 +146,9 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void MovementHacks()
     {
+        // Exit early if possible
+        if (!(FastSprint || RocketBoots)) return;
+
         Movement move = null;
         foreach (Movement mv in FindObjectsOfType<Movement>())
         {
@@ -154,6 +166,9 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void MapHacks()
     {
+        // Exit early if possible
+        if (!MapESP) return;
+
         SetUpLocalPlayer myPlayer = null;
         List<SetUpLocalPlayer> players = new List<SetUpLocalPlayer>();
         foreach (SetUpLocalPlayer s in FindObjectsOfType<SetUpLocalPlayer>())
