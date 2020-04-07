@@ -168,14 +168,14 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             if (s.isLocalPlayer) myPlayer = s;
             else players.Add(s);
         }
-        if (slp == null) return;
+        if (myPlayer == null) return;
 
         if (MapESP)
         {
             foreach (SetUpLocalPlayer s in players)
             {
                 GameObject player = s.gameObject;
-                slp.SetSinglePointerUI(player);
+                myPlayer.SetSinglePointerUI(player);
             }
         }
     }
