@@ -57,12 +57,6 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void WeaponHacks()
     {
-        // Exit early if possible
-        if (!(InfiniteAmmo || FullAuto || NoRecoil ||
-            (StartWeapon.Length != 0 && !StartWeapon.Equals("0") ||
-            (CustomAttachment.Length != 0 && !CustomAttachment.Equals("0")))
-            return;
-
         // Get weapon manager
         WeaponManager weaponManager = null;
         foreach (WeaponManager wm in FindObjectsOfType<WeaponManager>())
@@ -78,8 +72,6 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         {
             cw.currentclip = cw.clipSize;
             cw.Networkcurrentclip = cw.clipSize;
-            cw.totalAmmo = cw.maxSpareAmmo;
-            cw.NetworktotalAmmo = cw.maxSpareAmmo;
         }
 
 
