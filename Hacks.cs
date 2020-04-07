@@ -14,6 +14,11 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     private Rect weaponWindow;
     private Rect otherWindow;
 
+    // Helpers
+    private static bool weaponsCleared = false;
+    private static bool movementCleared = false;
+    private static List<SetUpLocalPlayer> pointers = new List<SetUpLocalPlayer>();
+
     // Settings
     public static bool NoRecoil = false;
     public static bool FullAuto = false;
@@ -57,6 +62,10 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
 
     private void WeaponHacks()
     {
+        // Exit early if possible
+        if (weaponsCleared && !(InfiniteAmmo || FullAuto || NoRecoil ||
+            (StartWeapon.Length != 0 && !StartWeapon.Equals("0") ||
+            (CustomAttachment.Length != 0 && !CustomAttachment.Equals("0"))) return;
         // Get weapon manager
         WeaponManager weaponManager = null;
         foreach (WeaponManager wm in FindObjectsOfType<WeaponManager>())
@@ -98,6 +107,10 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             cw.currentAttachment = 0;
             cw.NetworkcurrentAttachment = 0;
         }
+
+        weaponsCleared = !(InfiniteAmmo || FullAuto || NoRecoil ||
+                (StartWeapon.Length != 0 && !StartWeapon.Equals("0") ||
+                (CustomAttachment.Length != 0 && !CustomAttachment.Equals("0"));
     }
 
     private void HealthHacks()
@@ -139,7 +152,7 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
     private void MovementHacks()
     {
         // Exit early if possible
-        if (!(FastSprint || RocketBoots)) return;
+        if (movementCleared && !(FastSprint || RocketBoots)) return;
 
         Movement move = null;
         foreach (Movement mv in FindObjectsOfType<Movement>())
@@ -154,6 +167,8 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
             move.sprintSpeed = 12f;
 
         move.rocketJumpEnabled = RocketBoots;
+
+        movementCleared = !(FastSprint || RocketBoots);
     }
 
     private void MapHacks()
@@ -174,8 +189,12 @@ public class TheBushsBakedBeansGoldenRetriever : MonoBehaviour
         {
             foreach (SetUpLocalPlayer s in players)
             {
-                GameObject player = s.gameObject;
-                myPlayer.SetSinglePointerUI(player);
+                if (!pointers.Contains(s))
+                {
+                    GameObject player = s.gameObject;
+                    myPlayer.SetSinglePointerUI(player);
+                    pointers.Add(s);
+                }
             }
         }
     }
